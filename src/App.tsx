@@ -1,31 +1,19 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useEffect } from "react";
+import ApplicationListPage from "./pages/ApplicationListPage";
 import "./App.css";
+import CreateApplicationPage from "./pages/CreateApplicationPage";
 
 function App() {
-  const fetchLocationData = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/api/location");
-      if (!response.ok) {
-        throw new Error("Failed to fetch location data");
-      }
-      await response.json();
-    } catch (error: any) {}
-  };
-
-  useEffect(() => {
-    fetchLocationData();
-  }, []);
-
   return (
     <Router>
-      <div>
-        <Switch>
-          <Route path='/'>
-            <div></div>
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path='/create'>
+          <CreateApplicationPage />
+        </Route>
+        <Route path='/'>
+          <ApplicationListPage />
+        </Route>
+      </Switch>
     </Router>
   );
 }
