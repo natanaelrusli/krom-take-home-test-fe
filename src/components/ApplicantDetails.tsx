@@ -40,6 +40,14 @@ const ApplicantDetails = ({
     }
   };
 
+  if (!application) {
+    return (
+      <div className='h-full w-full flex justify-center items-center border border-borderGray'>
+        <p>No Applicant data</p>
+      </div>
+    );
+  }
+
   return (
     <div className='py-5 px-8 h-full border border-borderGray'>
       <div className='w-full flex justify-center'>

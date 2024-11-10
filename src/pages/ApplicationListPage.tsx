@@ -23,10 +23,13 @@ const ApplicationListPage = () => {
     ResponseMeta | undefined
   >();
 
-  const [tableConfig, setTableConfig] = useState<GetApplicationRequest>({
+  const initialTableConfig: GetApplicationRequest = {
     curr_page: 1,
     page_size: 15,
-  });
+  };
+
+  const [tableConfig, setTableConfig] =
+    useState<GetApplicationRequest>(initialTableConfig);
 
   const fetchApplications = async (payload: GetApplicationRequest) => {
     setLoadingApplications(true);
@@ -101,10 +104,17 @@ const ApplicationListPage = () => {
 
   useEffect(() => {
     try {
-      fetchApplications(tableConfig);
       fetchLocations();
       fetchRoles();
       fetchAllStatus();
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      fetchApplications(tableConfig);
     } catch (error) {
       console.error(error);
     }
@@ -127,7 +137,7 @@ const ApplicationListPage = () => {
   const handleStatusChange = (selectedValue: string) => {
     setTableConfig({
       ...tableConfig,
-      status: Number(selectedValue),
+      status: selectedValue,
     });
   };
 
@@ -198,7 +208,7 @@ const ApplicationListPage = () => {
                 <Select
                   title='Status'
                   options={status.map((stat) => ({
-                    key: stat.id,
+                    key: String(stat.status),
                     label: stat.status,
                   }))}
                   value={tableConfig.status}
