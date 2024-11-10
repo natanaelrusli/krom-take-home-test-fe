@@ -1,50 +1,68 @@
-const ApplicantDetails = () => {
+import { Application } from "../types";
+
+type ApplicantDetailsProps = {
+  application: Application;
+};
+
+const ApplicantDetails = ({ application }: ApplicantDetailsProps) => {
   return (
     <div className='py-5 px-8 h-full'>
       <div className='w-full flex justify-center'>
         <img
-          src='https://avatars.githubusercontent.com/u/124599?v=4'
+          src={`${application?.applicant?.profile_image || ""}`}
           alt='avatar'
-          className='w-36'
+          className='size-36'
         />
       </div>
 
       <div className='mt-5'>
         <table className='w-full'>
-          <tr>
-            <td className='px-2 py-3'>Name</td>
-            <td className='px-2 py-3'>Ethan Robinson</td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Email</td>
-            <td className='px-2 py-3'>
-              <a href='mailto:ethan.robinson@email.com'>
-                ethan.robinson@email.com
-              </a>
-            </td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Phone No.</td>
-            <td className='px-2 py-3'>+98273647392</td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Role Applied For</td>
-            <td className='px-2 py-3'>System Architect</td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Location</td>
-            <td className='px-2 py-3'>South Africa</td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Resume</td>
-            <td className='px-2 py-3'>
-              <a href='http://'>Resume</a>
-            </td>
-          </tr>
-          <tr>
-            <td className='px-2 py-3'>Status</td>
-            <td className='px-2 py-3'>Candidate Rejected</td>
-          </tr>
+          <tbody>
+            <tr>
+              <td className='px-2 py-3'>Name</td>
+              <td className='px-2 py-3 min-w-[300px]'>
+                {application?.applicant?.name || ""}
+              </td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Email</td>
+              <td className='px-2 py-3'>
+                <a href='mailto:ethan.robinson@email.com'>
+                  {application?.applicant?.email || ""}
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Phone No.</td>
+              <td className='px-2 py-3'>
+                {application?.applicant?.phone_number || ""}
+              </td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Role Applied For</td>
+              <td className='px-2 py-3'>{application?.role.role_name || ""}</td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Location</td>
+              <td className='px-2 py-3'>{application?.applicant?.location}</td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Resume</td>
+              <td className='px-2 py-3'>
+                <a
+                  target='_blank'
+                  rel='noreferrer'
+                  href={application?.resume_link}
+                >
+                  Resume
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td className='px-2 py-3'>Status</td>
+              <td className='px-2 py-3'>{application?.status}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
 

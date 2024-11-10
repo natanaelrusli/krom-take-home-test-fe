@@ -1,6 +1,14 @@
+export type ResponseMeta = {
+  curr_page?: number;
+  page_size?: number;
+  timestamp: number;
+  total_data?: number;
+};
+
 export type Response<T> = {
   data: T;
   message: string;
+  meta?: ResponseMeta;
 };
 
 export type Application = {

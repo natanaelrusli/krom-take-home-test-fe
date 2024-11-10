@@ -1,39 +1,46 @@
 import React, { useState } from "react";
-
-export type Application = {
-  id: number;
-  applicant: Applicant;
-  role: Role;
-  resume_link: string;
-  status: string;
-  year_of_experience: number;
-};
-
-export type Applicant = {
-  id: number;
-  name: string;
-  email: string;
-  phone_number: string;
-  location: string;
-  profile_image: string;
-};
-
-export type Role = {
-  id: number;
-  role_name: string;
-};
+import { Application } from "../types";
 
 type TableProps = {
   data: Application[];
-  onRowClick: (candidate: Application) => void;
+  onRowClick: (candidate: Application, index?: number) => void;
+  onNextPage: (page: number) => void;
+  totalData: number;
+  currPage: number;
+  pageSize: number;
 };
 
-const Table: React.FC<TableProps> = ({ data, onRowClick }) => {
+const Table: React.FC<TableProps> = ({
+  data,
+  onRowClick,
+  currPage,
+  totalData,
+  pageSize,
+  onNextPage,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredData = data?.filter((candidate) =>
     candidate.applicant.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const totalPages = Math.ceil(totalData / pageSize);
+
+  const handleNextPage = () => {
+    if (currPage < totalPages) {
+      onNextPage(currPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currPage > 1) {
+      onNextPage(currPage - 1);
+    }
+  };
+
+  const isFirstPage = currPage === 1;
+
+  const isLastPage = currPage === totalPages;
 
   return (
     <div className='flex border border-borderGray min-w-96 w-full'>
@@ -48,13 +55,21 @@ const Table: React.FC<TableProps> = ({ data, onRowClick }) => {
           />
 
           <div className='flex gap-1 items-center'>
-            <button className='border h-full border-borderGray px-[4px] py-[1px] disabled:bg-borderGray'>
+            <button
+              className='border h-full border-borderGray px-[4px] py-[1px] disabled:bg-borderGray'
+              disabled={isFirstPage}
+              onClick={handlePrevPage}
+            >
               {"<"}
             </button>
             <div className='border border-borderGray px-[10px] py-[3px] h-full text-sm'>
-              1
+              {currPage}
             </div>
-            <button className='border h-full border-borderGray px-[4px] py-[1px] disabled:bg-borderGray'>
+            <button
+              className='border h-full border-borderGray px-[4px] py-[1px] disabled:bg-borderGray'
+              disabled={isLastPage}
+              onClick={handleNextPage}
+            >
               {">"}
             </button>
           </div>
@@ -82,7 +97,7 @@ const Table: React.FC<TableProps> = ({ data, onRowClick }) => {
               <tr
                 key={index}
                 className='cursor-pointer hover:bg-gray-100 text-sm'
-                onClick={() => onRowClick(application)}
+                onClick={() => onRowClick(application, index)}
               >
                 <td className='p-[9px] border border-borderGray overflow-ellipsis max-w-24 overflow-hidden'>
                   {application.applicant.name}

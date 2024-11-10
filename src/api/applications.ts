@@ -1,16 +1,42 @@
-export const getAllApplications = async () => {
+import { Application, Response } from "../types";
+import { GetApplicationRequest } from "../types/request";
+
+export const getApplications = async (
+  request: GetApplicationRequest
+): Promise<Response<Application[]>> => {
   try {
+    const {
+      location,
+      job_role_id,
+      status,
+      filter_keyword,
+      curr_page,
+      page_size,
+    } = request;
+    const requestBody = {
+      location,
+      job_role_id,
+      status,
+      filter_keyword,
+      curr_page,
+      page_size,
+    };
+
     const response = await fetch("http://localhost:3000/api/applications", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       throw new Error("Failed to fetch applications");
     }
 
-    const result = await response.json();
-    return result.data;
+    return await response.json();
   } catch (error) {
     console.error("Error fetching applications:", error);
+    return { data: [], message: `Error fetching: ${error}` };
   }
 };
