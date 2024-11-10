@@ -239,7 +239,10 @@ const ApplicationListPage = () => {
             {loadingApplications ? (
               <Loader text='Loading Applicant Details...' />
             ) : (
-              <ApplicantDetails application={data[selectedIndex]} />
+              <ApplicantDetails
+                application={data[selectedIndex]}
+                triggerRefetch={() => fetchApplications(tableConfig)}
+              />
             )}
           </div>
         </div>

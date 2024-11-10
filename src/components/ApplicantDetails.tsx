@@ -1,10 +1,45 @@
+import toast from "react-hot-toast";
 import { Application } from "../types";
 
 type ApplicantDetailsProps = {
   application: Application;
+  triggerRefetch: () => void;
 };
 
-const ApplicantDetails = ({ application }: ApplicantDetailsProps) => {
+const ApplicantDetails = ({
+  application,
+  triggerRefetch,
+}: ApplicantDetailsProps) => {
+  const updateApplicationStatus = async (newStatus: string) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/application/status",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            application_id: application.id,
+            new_status: newStatus,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage =
+          errorData.message || "Failed to update application status";
+        throw new Error(errorMessage);
+      }
+
+      toast.success("Application Status Updated!");
+      triggerRefetch();
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div className='py-5 px-8 h-full border border-borderGray'>
       <div className='w-full flex justify-center'>
@@ -67,10 +102,18 @@ const ApplicantDetails = ({ application }: ApplicantDetailsProps) => {
       </div>
 
       <div className='flex gap-3 px-2 mt-6 w-full h-16'>
-        <button className='h-full w-full bg-primaryGreen text-white'>
+        <button
+          onClick={() => updateApplicationStatus("Interview Scheduled")}
+          className='h-full w-full bg-primaryGreen text-white disabled:bg-borderGray disabled:hover:scale-100 hover:scale-105 transition-all'
+          disabled={application?.status === "Interview Scheduled"}
+        >
           Schedule Interview
         </button>
-        <button className='h-full w-full bg-white text-primaryGreen border border-primaryGreen'>
+        <button
+          onClick={() => updateApplicationStatus("Pending")}
+          className='h-full w-full bg-white text-primaryGreen border border-primaryGreen disabled:bg-borderGray disabled:border-none disabled:text-opacity-30 disabled:hover:scale-100 hover:scale-105 transition-all'
+          disabled={application?.status === "Pending"}
+        >
           Review
         </button>
       </div>
