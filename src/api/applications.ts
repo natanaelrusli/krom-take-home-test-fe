@@ -22,13 +22,16 @@ export const getApplications = async (
       page_size,
     };
 
-    const response = await fetch("http://localhost:3000/api/applications", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/applications`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch applications");

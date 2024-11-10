@@ -2,15 +2,33 @@
 
 ### UI and Flow Example
 
-#### Applications List
+#### Applications List Page
 
 ![aplications list](./docs/application%20list.gif)
 
-#### Creating new Application
+#### Create new Application Page
 
 ![create](./docs/create.gif)
 
 ### Setup
+
+#### Without Docker
+
+1. Install dependencies
+
+```
+npm install
+```
+
+2. Change name of .env.example to .env and change the REACT_APP_API_URL to `http://localhost:3000`
+
+3. Start app
+
+```
+npm start
+```
+
+#### With docker
 
 1. Build the docker image
 

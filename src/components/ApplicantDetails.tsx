@@ -13,7 +13,7 @@ const ApplicantDetails = ({
   const updateApplicationStatus = async (newStatus: string) => {
     try {
       const response = await fetch(
-        "http://localhost:3000/api/application/status",
+        `${process.env.REACT_APP_API_URL}/api/application/status`,
         {
           method: "POST",
           headers: {

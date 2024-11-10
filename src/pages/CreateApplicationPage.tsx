@@ -38,9 +38,12 @@ const CreateApplicationPage = () => {
   const fetchLocations = async () => {
     setLoadingLocations(true);
     try {
-      const response = await fetch("http://localhost:3000/api/location", {
-        method: "GET",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/location`,
+        {
+          method: "GET",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch locations");
       }
@@ -56,9 +59,12 @@ const CreateApplicationPage = () => {
   const fetchRoles = async () => {
     setLoadingRoles(true);
     try {
-      const response = await fetch("http://localhost:3000/api/role", {
-        method: "GET",
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/role`,
+        {
+          method: "GET",
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch roles");
       }
@@ -75,7 +81,7 @@ const CreateApplicationPage = () => {
     setLoadingCreate(true);
     try {
       const response: Response = await fetch(
-        "http://localhost:3000/api/application/new",
+        `${process.env.REACT_APP_API_URL}/api/application/new`,
         {
           method: "POST",
           headers: {
