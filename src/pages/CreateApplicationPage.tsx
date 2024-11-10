@@ -116,6 +116,12 @@ const CreateApplicationPage = () => {
   ) => {
     const { name, value } = e.target;
 
+    if (name === "years_of_experience") {
+      if (value.startsWith("0") && value.length > 1) {
+        e.target.value = value.slice(1); // Remove the leading zero
+      }
+    }
+
     setFormData({
       ...formData,
       [name]: numberFields.includes(name) ? Number(value) : value,
@@ -128,7 +134,7 @@ const CreateApplicationPage = () => {
   }, []);
 
   return (
-    <div className='w-11/12 mx-auto'>
+    <div className='w-11/12 mx-auto min-w-[500px]'>
       <div className='w-full my-6 bg-primaryGreen px-4 py-6 text-white font-bold'>
         <Link to={"/"}>Applicant Tracker</Link>
       </div>
@@ -220,7 +226,7 @@ const CreateApplicationPage = () => {
             value={formData.resume_link}
             onChange={handleChange}
             placeholder='Enter resume url'
-            className='border border-borderGray py-1 px-3 w-1/4'
+            className='border border-borderGray py-1 px-3 w-1/4 min-w-[300px]'
           />
         </div>
 

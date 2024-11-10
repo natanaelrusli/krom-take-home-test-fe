@@ -123,6 +123,7 @@ const ApplicationListPage = () => {
   const handleLocationChange = (selectedValue: string) => {
     setTableConfig({
       ...tableConfig,
+      curr_page: 1,
       location: selectedValue,
     });
   };
@@ -130,6 +131,7 @@ const ApplicationListPage = () => {
   const handleRoleChange = (selectedValue: string) => {
     setTableConfig({
       ...tableConfig,
+      curr_page: 1,
       job_role_id: Number(selectedValue),
     });
   };
@@ -137,6 +139,7 @@ const ApplicationListPage = () => {
   const handleStatusChange = (selectedValue: string) => {
     setTableConfig({
       ...tableConfig,
+      curr_page: 1,
       status: selectedValue,
     });
   };
@@ -230,19 +233,21 @@ const ApplicationListPage = () => {
 
         <div className='w-full h-full bg-white flex gap-1 overflow-y-auto'>
           <div className='w-1/2 max-h-[700px] overflow-y-scroll'>
-            {loadingApplications ? (
-              <Loader text='Loading Applications...' />
-            ) : (
-              <Table
-                data={data}
-                totalData={applicationsDataMeta?.total_data || 0}
-                currPage={applicationsDataMeta?.curr_page || 0}
-                pageSize={applicationsDataMeta?.page_size || 0}
-                onRowClick={(_, index) => setSelectedIndex(index || 0)}
-                onNextPage={(page) => handlePageChange(page)}
-                setectedIndex={selectedIndex}
-              />
-            )}
+            <Table
+              data={data}
+              totalData={applicationsDataMeta?.total_data || 0}
+              currPage={applicationsDataMeta?.curr_page || 0}
+              pageSize={applicationsDataMeta?.page_size || 0}
+              setectedIndex={selectedIndex}
+              onRowClick={(_, index) => setSelectedIndex(index || 0)}
+              onNextPage={(page) => handlePageChange(page)}
+              onSearch={(value) =>
+                setTableConfig({
+                  ...tableConfig,
+                  filter_keyword: value,
+                })
+              }
+            />
           </div>
 
           <div className='w-1/2 max-h-[700px] overflow-y-scroll'>

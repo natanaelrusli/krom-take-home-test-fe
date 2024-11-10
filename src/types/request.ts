@@ -2,7 +2,7 @@ export type GetApplicationRequest = {
   location?: string;
   job_role_id?: number;
   status?: string;
-  filter_keyword?: number;
+  filter_keyword?: string;
   curr_page: number;
   page_size: number;
 };

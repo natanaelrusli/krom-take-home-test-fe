@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Application } from "../types";
+import { useDebouncedCallback } from "use-debounce";
 
 type TableProps = {
   data: Application[];
   onRowClick: (candidate: Application, index?: number) => void;
   onNextPage: (page: number) => void;
+  onSearch: (value: string) => void;
   totalData: number;
   currPage: number;
   pageSize: number;
@@ -19,14 +21,19 @@ const Table: React.FC<TableProps> = ({
   pageSize,
   onNextPage,
   setectedIndex,
+  onSearch,
 }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredData = data?.filter((candidate) =>
-    candidate.applicant.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  const debounceDelay = 300;
   const totalPages = Math.ceil(totalData / pageSize);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const debouncedSearch = useDebouncedCallback((value) => {
+    onSearch(value);
+  }, debounceDelay);
+
+  const handleSearchChange = (val: string) => {
+    setSearchValue(val);
+    debouncedSearch(val);
+  };
 
   const handleNextPage = () => {
     if (currPage < totalPages) {
@@ -41,7 +48,6 @@ const Table: React.FC<TableProps> = ({
   };
 
   const isFirstPage = currPage === 1;
-
   const isLastPage = currPage === totalPages;
 
   return (
@@ -52,8 +58,8 @@ const Table: React.FC<TableProps> = ({
             type='text'
             placeholder='Search...'
             className='px-2 py-[2px] text-sm border border-borderGray outline-none'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchValue}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
 
           <div className='flex gap-1 items-center'>
@@ -95,7 +101,7 @@ const Table: React.FC<TableProps> = ({
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((application, index) => (
+            {data.map((application, index) => (
               <tr
                 key={index}
                 className={`cursor-pointer hover:bg-gray-100 text-sm ${

@@ -52,9 +52,9 @@ const ApplicantDetails = ({
     <div className='py-5 px-8 h-full border border-borderGray'>
       <div className='w-full flex justify-center'>
         <img
-          src={`${application?.applicant?.profile_image || ""}`}
+          src={`${application?.applicant?.profile_image}`}
           alt='avatar'
-          className='size-36'
+          className='size-36 bg-borderGray'
         />
       </div>
 
