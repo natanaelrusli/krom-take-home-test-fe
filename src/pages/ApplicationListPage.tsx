@@ -22,18 +22,11 @@ const ApplicationListPage = () => {
   const [applicationsDataMeta, setApplicationsDataMeta] = useState<
     ResponseMeta | undefined
   >();
-  const [currentApplicationPage, setCurrentApplicationPage] =
-    useState<number>(0);
 
-  const [selectedLocation, setSelectedLocation] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedRole, setSelectedRole] = useState<string | undefined>(
-    undefined
-  );
-  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
-    undefined
-  );
+  const [tableConfig, setTableConfig] = useState<GetApplicationRequest>({
+    curr_page: 1,
+    page_size: 15,
+  });
 
   const fetchApplications = async (payload: GetApplicationRequest) => {
     setLoadingApplications(true);
@@ -41,6 +34,7 @@ const ApplicationListPage = () => {
       const response = await getApplications(payload);
       setData(response?.data);
       setApplicationsDataMeta(response?.meta);
+      setSelectedIndex(0);
     } catch (error) {
       console.error("Error fetching applications:", error);
     } finally {
@@ -107,43 +101,41 @@ const ApplicationListPage = () => {
 
   useEffect(() => {
     try {
-      fetchApplications({
-        curr_page: 1,
-        page_size: 15,
-      });
+      fetchApplications(tableConfig);
       fetchLocations();
       fetchRoles();
       fetchAllStatus();
     } catch (error) {
       console.error(error);
     }
-  }, []);
-
-  useEffect(() => {
-    try {
-      fetchApplications({
-        curr_page: currentApplicationPage,
-        page_size: 15,
-        location: selectedLocation,
-        job_role_id: Number(selectedRole),
-        status: Number(selectedStatus),
-      });
-      setSelectedIndex(0);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [currentApplicationPage, selectedLocation, selectedRole, selectedStatus]);
+  }, [tableConfig]);
 
   const handleLocationChange = (selectedValue: string) => {
-    setSelectedLocation(selectedValue);
+    setTableConfig({
+      ...tableConfig,
+      location: selectedValue,
+    });
   };
 
   const handleRoleChange = (selectedValue: string) => {
-    setSelectedRole(selectedValue);
+    setTableConfig({
+      ...tableConfig,
+      job_role_id: Number(selectedValue),
+    });
   };
 
   const handleStatusChange = (selectedValue: string) => {
-    setSelectedStatus(selectedValue);
+    setTableConfig({
+      ...tableConfig,
+      status: Number(selectedValue),
+    });
+  };
+
+  const handlePageChange = (page: number) => {
+    setTableConfig({
+      ...tableConfig,
+      curr_page: page,
+    });
   };
 
   const Loader = ({ text }: { text: string }) => (
@@ -177,7 +169,7 @@ const ApplicationListPage = () => {
                     key: loc.id,
                     label: loc.location_name,
                   }))}
-                  value={selectedLocation}
+                  value={tableConfig.location}
                   onChange={(e) => handleLocationChange(e.target.value)}
                 />
               )}
@@ -193,7 +185,7 @@ const ApplicationListPage = () => {
                     key: role.id,
                     label: role.role_name,
                   }))}
-                  value={selectedRole}
+                  value={tableConfig.job_role_id}
                   onChange={(e) => handleRoleChange(e.target.value)}
                 />
               )}
@@ -209,7 +201,7 @@ const ApplicationListPage = () => {
                     key: stat.id,
                     label: stat.status,
                   }))}
-                  value={selectedStatus}
+                  value={tableConfig.status}
                   onChange={(e) => handleStatusChange(e.target.value)}
                 />
               )}
@@ -237,7 +229,7 @@ const ApplicationListPage = () => {
                 currPage={applicationsDataMeta?.curr_page || 0}
                 pageSize={applicationsDataMeta?.page_size || 0}
                 onRowClick={(_, index) => setSelectedIndex(index || 0)}
-                onNextPage={(page) => setCurrentApplicationPage(page)}
+                onNextPage={(page) => handlePageChange(page)}
                 setectedIndex={selectedIndex}
               />
             )}
