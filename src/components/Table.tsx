@@ -103,16 +103,16 @@ const Table: React.FC<TableProps> = ({
                 }`}
                 onClick={() => onRowClick(application, index)}
               >
-                <td className='p-[9px] border border-borderGray overflow-ellipsis max-w-24 overflow-hidden'>
+                <td className='p-[9px] border border-borderGray overflow-hidden max-w-28 whitespace-nowrap text-ellipsis'>
                   {application.applicant.name}
                 </td>
-                <td className='p-[9px] border border-borderGray overflow-ellipsis max-w-24 overflow-hidden'>
+                <td className='p-[9px] border border-borderGray overflow-hidden max-w-28 whitespace-nowrap text-ellipsis'>
                   {application.applicant.email}
                 </td>
-                <td className='p-[9px] border border-borderGray overflow-ellipsis max-w-32 overflow-hidden'>
+                <td className='p-[9px] border border-borderGray overflow-hidden max-w-28 whitespace-nowrap text-ellipsis'>
                   {application.role.role_name}
                 </td>
-                <td className='p-[9px] border border-borderGray overflow-ellipsis w-12 max-w-12 overflow-hidden'>
+                <td className='p-[9px] border border-borderGray overflow-hidden max-w-28 whitespace-nowrap text-ellipsis'>
                   {application.status}
                 </td>
               </tr>

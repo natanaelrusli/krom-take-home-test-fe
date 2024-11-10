@@ -6,7 +6,7 @@ type MainLayoutProps = {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className='w-10/12 mx-auto h-[94vh] py-10 overflow-hidden'>
+    <div className='w-10/12 mx-auto h-[92vh] py-10 overflow-hidden'>
       {children}
     </div>
   );
