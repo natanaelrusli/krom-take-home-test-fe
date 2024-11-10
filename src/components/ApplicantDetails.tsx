@@ -6,7 +6,7 @@ type ApplicantDetailsProps = {
 
 const ApplicantDetails = ({ application }: ApplicantDetailsProps) => {
   return (
-    <div className='py-5 px-8 h-full'>
+    <div className='py-5 px-8 h-full border border-borderGray'>
       <div className='w-full flex justify-center'>
         <img
           src={`${application?.applicant?.profile_image || ""}`}

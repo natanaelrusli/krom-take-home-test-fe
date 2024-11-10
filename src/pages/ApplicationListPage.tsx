@@ -25,7 +25,6 @@ const ApplicationListPage = () => {
   const [currentApplicationPage, setCurrentApplicationPage] =
     useState<number>(0);
 
-  // States for the selected values
   const [selectedLocation, setSelectedLocation] = useState<string | undefined>(
     undefined
   );
@@ -49,7 +48,6 @@ const ApplicationListPage = () => {
     }
   };
 
-  // Fetch locations
   const fetchLocations = async () => {
     setLoadingLocations(true);
     try {
@@ -68,7 +66,6 @@ const ApplicationListPage = () => {
     }
   };
 
-  // Fetch roles
   const fetchRoles = async () => {
     setLoadingRoles(true);
     try {
@@ -87,7 +84,6 @@ const ApplicationListPage = () => {
     }
   };
 
-  // Fetch application status
   const fetchAllStatus = async () => {
     setLoadingStatus(true);
     try {
@@ -132,6 +128,7 @@ const ApplicationListPage = () => {
         job_role_id: Number(selectedRole),
         status: Number(selectedStatus),
       });
+      setSelectedIndex(0);
     } catch (error) {
       console.error(error);
     }
@@ -241,6 +238,7 @@ const ApplicationListPage = () => {
                 pageSize={applicationsDataMeta?.page_size || 0}
                 onRowClick={(_, index) => setSelectedIndex(index || 0)}
                 onNextPage={(page) => setCurrentApplicationPage(page)}
+                setectedIndex={selectedIndex}
               />
             )}
           </div>

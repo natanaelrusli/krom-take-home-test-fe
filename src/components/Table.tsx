@@ -8,6 +8,7 @@ type TableProps = {
   totalData: number;
   currPage: number;
   pageSize: number;
+  setectedIndex?: number;
 };
 
 const Table: React.FC<TableProps> = ({
@@ -17,6 +18,7 @@ const Table: React.FC<TableProps> = ({
   totalData,
   pageSize,
   onNextPage,
+  setectedIndex,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -96,7 +98,9 @@ const Table: React.FC<TableProps> = ({
             {filteredData.map((application, index) => (
               <tr
                 key={index}
-                className='cursor-pointer hover:bg-gray-100 text-sm'
+                className={`cursor-pointer hover:bg-gray-100 text-sm ${
+                  setectedIndex === index && "bg-secondaryGreen"
+                }`}
                 onClick={() => onRowClick(application, index)}
               >
                 <td className='p-[9px] border border-borderGray overflow-ellipsis max-w-24 overflow-hidden'>
